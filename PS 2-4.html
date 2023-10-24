@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Data Display</title>
+</head>
+<body>
+    <h1>Exchange Rates</h1>
+    <div id="exchangeRates"></div>
+
+    <h2>Click To See How Much 1 USD Is Equivalent Today</h2>
+    <button id="fetchButton">Click</button>
+    <br><br><br><br><br><br>
+    <div id="apiDescription">
+      <h2>About the API</h2>
+      <p>The ExchangeRate-API provides up-to-date exchange rate data for various currencies. It allows you to retrieve exchange rates based on a specified base currency.</p>
+      <p>Website: <a href="https://apilayer.com/marketplace/exchangerates_data-api" target="_blank">ExchangeRate-API Documentation</a></p>
+
+      <h2>API Request Parameters</h2>
+      <ul>
+          <li><strong>apikey</strong>: API key for authentication.</li>
+          <li><strong>base</strong>: The base currency for which exchange rates are requested. In this example, it's set to USD. </li>
+          <li><strong>latest</strong>: This param ensures the rates are up-to-date. 
+      </ul>
+
+      <h2>API Applications</h2>
+      <p>The ExchangeRate-API can be helpful in various applications, including:</p>
+      <ul>
+          <li><strong>Finance and E-commerce:</strong> E-commerce platforms can use this API to provide real-time currency conversion for international customers, helping them understand prices in their local currency. Financial apps can also use it to track currency exchange rates for investment and trading purposes.</li>
+          <li><strong>Travel Planning:</strong> Travel-related websites and apps can use this API to provide users with current exchange rates for budgeting and expense planning while traveling to different countries.</li>
+      </ul>
+    </div>
+
+
+    <script>
+        // Using the Fetch API
+        var exchangeRatesDiv = document.getElementById("exchangeRates");
+
+        document.getElementById("fetchButton").addEventListener("click", function () {
+            // Clear previous data
+            exchangeRatesDiv.innerHTML = "";
+
+            fetch("https://api.apilayer.com/exchangerates_data/latest?apikey=qDRkI2Hvk4UvCikA7NLsc62B0i4YE5bX&base=USD")
+                .then(response => response.json())
+                .then(data => displayData(data))
+                .catch(error => console.error('Error:', error));
+        });
+
+        // Display Data Function
+        function displayData(data) {
+            var table = document.createElement("table");
+            var tableHTML = "<tr><th>Currency</th><th>Exchange Rate</th></tr>";
+
+            for (var currency in data.rates) {
+                tableHTML += "<tr><td>" + currency + "</td><td>" + data.rates[currency] + "</td></tr>";
+            }
+
+            table.innerHTML = tableHTML;
+            exchangeRatesDiv.appendChild(table);
+        }
+    </script>
+</body>
+</html>
